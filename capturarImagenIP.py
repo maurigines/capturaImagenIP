@@ -1,44 +1,28 @@
-from PIL import Image
-from io import BytesIO
-import requests
-import os
+import cv2
 
-def capturarImagen(url, usuario, contrasena, nombre):
+# Dirección RTSP de la cámara Hikvision
+rtsp_url = 'rtsp://USUARIO:PASSWORD@IP:PORT/h264/ch(CANAL)/main/av_stream'
+# Reemplaza USUARIO, PASSWORD, IP, PORT y CANAL con tus propias credenciales y detalles de la cámara
 
-	try:
-		respuesta = requests.get(url, auth= (usuario, contrasena), timeout=10)
-		
-		if respuesta.status_code == 200:
-			imgPil = Image.open(BytesIO(respuesta.content))
-			imgPil.save(f'img/{nombre}.jpg', 'JPEG')
-			print(f'Imagen guatdada de {nombre}')
-		else:
-			print('no se pudo capturar la imagen')
-	
-	except requests.RequestException as e:
-		print('Error: ', e)
+# Conectarse a la cámara
+cap = cv2.VideoCapture(rtsp_url)
 
-def main():
-	
-	urlCamara = 'http://192.168.1.114/doc/page/preview.asp'
-	usuarioCamara = 'admin'
-	contrasenaCamara = 'Marvic2023'
+if not cap.isOpened():
+    print("Error al conectar a la cámara")
+else:
+    # Capturar un fotograma
+    ret, frame = cap.read()
+    if ret:
+        # Mostrar la imagen capturada
+        cv2.imshow('Captura de cámara', frame)
+        
+        # Guardar la imagen capturada en un archivo
+        cv2.imwrite('captura_camara.jpg', frame)
+        
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    else:
+        print("Error al capturar el fotograma")
 
-	if not os.path.exists('img'):
-		os.makedirs('img')
-
-	while True:
-		print('\nMenu: ')
-		print('1- Sacar Foto')
-		print('2- Salir')
-		
-		opcion = input('Seleccione una opcion')
-
-		if opcion == '1':
-			capturarImagen(urlCamara, usuarioCamara, contrasenaCamara, 'camaraEntrada')
-		else:
-			print('Saliendo del programa')
-			break
-
-if __name__ == "__main__":
-	main()
+# Liberar la cámara
+cap.release()
