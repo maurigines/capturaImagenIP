@@ -10,7 +10,7 @@ def capturarImagen(url, usuario, contrasena, nombre):
 		
 		if respuesta.status_code == 200:
 			imgPil = Image.open(BytesIO(respuesta.content))
-			imagenPil.save(f'img/{nombre}.jpg', 'JPEG')
+			imgPil.save(f'img/{nombre}.jpg', 'JPEG')
 			print(f'Imagen guatdada de {nombre}')
 		else:
 			print('no se pudo capturar la imagen')
