@@ -1,7 +1,7 @@
 import cv2
 
 # Dirección RTSP de la cámara Hikvision
-rtsp_url = 'rtsp://USUARIO:PASSWORD@IP:PORT/h264/ch(CANAL)/main/av_stream'
+rtsp_url = 'rtsp://marvic:Marvic2023@192.168.1.114:545/h264/ch(1)/main/av_stream'
 # Reemplaza USUARIO, PASSWORD, IP, PORT y CANAL con tus propias credenciales y detalles de la cámara
 
 # Conectarse a la cámara
